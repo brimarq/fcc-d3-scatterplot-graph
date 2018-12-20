@@ -47,8 +47,8 @@ function drawSvg() {
   ;
   const yScale = d3.scaleTime()
     .domain([
-      new Date(0, 0, 1, 0, 0, d3.min(json, (d) => d.Seconds)), 
-      new Date(0, 0, 1, 0, 0, d3.max(json, (d) => d.Seconds))
+      new Date(0, 0, 1, 0, 0, d3.min(json, (d) => d.Seconds) - 5), 
+      new Date(0, 0, 1, 0, 0, d3.max(json, (d) => d.Seconds) + 5)
     ])
     .range([0, height]) // keeps the plot right-side-up 
   ; 
