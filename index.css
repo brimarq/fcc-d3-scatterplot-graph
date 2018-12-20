@@ -1,0 +1,87 @@
+html {
+  /* height: 100%; */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(hsl(30, 15%, 90%), hsl(30, 15%, 60%));
+  color: #222;
+  min-height: 100vh;
+  /* box-sizing: border-box; */
+  /* border: 1px solid lime; */
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  /* box-sizing: border-box; */
+  /* border: 1px solid aqua; */
+}
+
+main {
+  flex: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  /* height: 20px; */
+  /* box-sizing: border-box; */
+  /* border: 1px solid yellow; */
+}
+
+div#svg-container {
+  /* position: relative;
+  height: 0;
+  width: 100%;
+  padding: 0;
+  padding-bottom: 100%; */
+  user-select: none;
+}
+
+/* #svg-content {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+} */
+
+svg {
+  border-radius: 8px;
+  background: #fefefe;
+  box-shadow: 10px 10px 20px -10px #000;
+}
+
+#tooltip {
+  color: #fefefe;
+  padding: 10px;
+  background: hsla(0, 0%, 0%, 0.8);
+  border-radius: 10px;
+  width: 90px;
+  height: 35px;
+}
+
+#tooltip span {
+  display: block;
+}
+
+
+
+
