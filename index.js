@@ -36,6 +36,27 @@ function drawSvg() {
   const width = w - margin.left - margin.right;
   const height = h - margin.top - margin.bottom;
 
+
+  /** Set the scales for x and y axes */
+  const xScale = d3.scaleTime()
+    .domain([
+      new Date(d3.min(json, (d) => d.Year) - 1, 0), 
+      new Date(d3.max(json, (d) => d.Year) + 1, 0)
+    ])
+    .range([0 , width])
+  ;
+  const yScale = d3.scaleTime()
+    .domain([
+      new Date(0, 0, 1, 0, 0, d3.min(json, (d) => d.Seconds)), 
+      new Date(0, 0, 1, 0, 0, d3.max(json, (d) => d.Seconds))
+    ])
+    .range([0, height]) // keeps the plot right-side-up 
+  ; 
+
+  /** Axes to be called */
+  const xAxis = d3.axisBottom(xScale);
+  const yAxis = d3.axisLeft(yScale).tickFormat(d3.timeFormat("%M:%S"));
+
   /** Create svg element */
   const svg = d3.select("main div#svg-container")
     .append("svg")
@@ -64,5 +85,61 @@ function drawSvg() {
     .style("font-size", "0.7em")
     .text("1994 - 2015")
   ;
+
+  const scatterplot = svg.append("g")
+    .attr("id", "scatterplot")
+  ;
+
+
+  /** Create barChart axes */
+  // barChart x-axis 
+  scatterplot.append("g")
+    .attr("id", "x-axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis)
+  ;
+
+  // barChart y-axis
+  scatterplot.append("g")
+    .attr("id", "y-axis")
+    .attr("transform", "translate(0, 0)")
+    .call(yAxis)
+  ;
+
+  // barChart y-axis label
+  scatterplot.append("text")
+    .attr("x", 25)
+    .attr("y", height / 2 )
+    .style("text-anchor", "middle")
+    .text("Time in Minutes")
+    .attr("transform", function(d) { 
+      const x = d3.select(this).attr("x");
+      const y = d3.select(this).attr("y");
+      return "rotate(-90 " + x + " " + y + ")"
+    })
+  ;
+
+  /** Now, get barChart bbox dimensions and bind data to barChart */
+  scatterplot.each(function() {
+    let data = {};
+    data.bboxWidth = d3.format(".2~f")(this.getBBox().width);
+    data.bboxHeight = d3.format(".2~f")(this.getBBox().height);
+    d3.select("g#x-axis").each(function() {
+      data.xAxisHeight = d3.format(".2~f")(this.getBBox().height)
+    });
+    d3.select("g#y-axis").each(function() {
+      data.yAxisWidth = d3.format(".2~f")(this.getBBox().width)
+    });
+    d3.select(this).datum(data);
+  });
+
+  /** Center the barChart group in the svg */
+  scatterplot.attr("transform", function(d) {
+    let bboxWDiff = d.bboxWidth - width;
+    let bboxHDiff = d.bboxHeight - height;
+    let newX = Math.round(margin.left + (bboxWDiff / 2));
+    let newY = Math.round(margin.top + (bboxHDiff / 2) - (d.xAxisHeight / 2));
+    return "translate(" + newX + "," + newY + ")"
+  });
 
 }
