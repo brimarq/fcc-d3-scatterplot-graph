@@ -43,4 +43,26 @@ function drawSvg() {
     .attr("height", height + margin.top + margin.bottom)
   ;
 
+  /** Create svg defs */
+  const defs = d3.select("svg").append("defs");
+
+  /** Chart title text */
+  svg.append("text")
+    .attr("id", "title")
+    .attr("x", (w / 2))
+    .attr("y", margin.top / 4 * 3)
+    .attr("fill", "#222")
+    .style("text-anchor", "middle")
+    .style("font-size", "1.25em")
+    .style("font-weight", "bold")
+    .text("Doping and Professional Cycling")
+    .append("tspan")
+    .attr("x", (w / 2))
+    .attr("dy", 20)
+    .attr("fill", "#222")
+    .style("font-weight", "normal")
+    .style("font-size", "0.7em")
+    .text("1994 - 2015")
+  ;
+
 }
