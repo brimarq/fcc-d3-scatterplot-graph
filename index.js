@@ -90,6 +90,21 @@ function drawSvg() {
     .attr("id", "scatterplot")
   ;
 
+  /** Create bars from json data */
+  scatterplot.selectAll("circle")
+    .data(json)
+    .enter()
+    .append("circle")
+    .attr("class", "dot")
+    .attr("cx", (d) => d3.format(".2~f")(xScale(new Date(d.Year, 0))))
+    .attr("cy", (d) => d3.format(".2~f")(yScale(new Date(0, 0, 1, 0, 0, d.Seconds))))
+    .attr("r", 7)
+    .attr("data-xvalue", (d) => d3.format(".2~f")(xScale(new Date(d.Year, 0))))
+    .attr("data-yvalue", (d) => d3.format(".2~f")(yScale(new Date(0, 0, 1, 0, 0, d.Seconds))))
+    .attr("fill", function(d) {
+      return d.Doping ? "hsla(0, 100%, 50%, 0.5)" : "hsla(120, 100%, 50%, 0.5)";
+    })
+  ;
 
   /** Create barChart axes */
   // barChart x-axis 
