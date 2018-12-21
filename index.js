@@ -36,6 +36,12 @@ function drawSvg() {
   const width = w - margin.left - margin.right;
   const height = h - margin.top - margin.bottom;
 
+  /** Set dot colors */
+  const dotColor = {
+    dope: "hsla(0, 100%, 50%, 0.5)",
+    nodope: "hsla(120, 100%, 50%, 0.5)"
+  };
+
 
   /** Set the scales for x and y axes */
   const xScale = d3.scaleTime()
@@ -102,7 +108,7 @@ function drawSvg() {
     .attr("data-xvalue", (d) => d3.format(".2~f")(xScale(new Date(d.Year, 0))))
     .attr("data-yvalue", (d) => d3.format(".2~f")(yScale(new Date(0, 0, 1, 0, 0, d.Seconds))))
     .attr("fill", function(d) {
-      return d.Doping ? "hsla(0, 100%, 50%, 0.5)" : "hsla(120, 100%, 50%, 0.5)";
+      return d.Doping ? dotColor.dope : dotColor.nodope;
     })
   ;
 
@@ -133,6 +139,74 @@ function drawSvg() {
       return "rotate(-90 " + x + " " + y + ")"
     })
   ;
+
+  /** Legend for scatterplot, positioned on the right-edge */
+  const legend = scatterplot.append("g")
+    .attr("id", "legend")
+    .attr("transform", "translate(" + width + ", " + 0 + ")")
+    .style("outline", "1px solid lime")
+  ;
+
+  // Create a rect for legend box that will center legend contents
+  legend.append("rect")
+    .attr("id", "legend-box")
+    .attr("fill", "none")
+  ;
+    
+  // Group for legend text
+  legend.append("g")
+    .attr("id", "legend-text")
+    .attr("font-size", ".8em")
+    .style("text-anchor", "end")
+    .style("outline", "1px solid blue")
+    .each(function() {
+      d3.select(this).append("text")
+        .attr("dy", "1em")
+        .text("Cyclists with no doping allegations ")
+        .append("tspan")
+        .text("⬤")
+        .attr("fill", dotColor.nodope)
+      ;
+      d3.select(this).append("text")
+        .attr("dy", "2.5em")
+        .text("Cyclists with doping allegations ")
+        .append("tspan")
+        .text("⬤")
+        .attr("fill", dotColor.dope)
+      ;
+    })
+  ;
+
+  // Position the legend contents
+  legend.each(function() {
+    // set padding for the legend box
+    const padding = {top: 10, right: 10, bottom: 10, left: 10};
+    // get legend-text group bbox dimensions
+    const legendText = {
+      width: +d3.format(".2~f")(this.querySelector("g#legend-text").getBBox().width),
+      height: +d3.format(".2~f")(this.querySelector("g#legend-text").getBBox().height)
+    };
+
+    // Calculate legend-box rect dimensions
+    const box = {
+      width: Math.round(padding.left + legendText.width + padding.right), 
+      height: Math.round(padding.top + legendText.height + padding.bottom)
+    };
+    
+    // Position legend-box and set dimensions
+    d3.select("rect#legend-box")
+      .attr("x", -box.width)
+      .attr("y", 0)
+      .attr("width", box.width)
+      .attr("height", box.height)
+    ;
+
+    // Position legend-text group, centered "within" legend-box
+    d3.select("g#legend-text")
+      .attr("transform", "translate(" + -padding.right + ", " + padding.top + ")")
+    ;
+  });
+  
 
   /** Now, get barChart bbox dimensions and bind data to barChart */
   scatterplot.each(function() {
