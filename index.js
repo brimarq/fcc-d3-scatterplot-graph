@@ -48,6 +48,8 @@ function drawSvg() {
     .domain([
       new Date(d3.min(json, (d) => d.Year) - 1, 0), 
       new Date(d3.max(json, (d) => d.Year) + 1, 0)
+      // new Date(d3.min(json, (d) => d.Year), 0), 
+      // new Date(d3.max(json, (d) => d.Year), 0)
     ])
     .range([0 , width])
   ;
@@ -55,6 +57,8 @@ function drawSvg() {
     .domain([
       new Date(0, 0, 1, 0, 0, d3.min(json, (d) => d.Seconds) - 5), 
       new Date(0, 0, 1, 0, 0, d3.max(json, (d) => d.Seconds) + 5)
+      // new Date(0, 0, 1, 0, 0, d3.min(json, (d) => d.Seconds)), 
+      // new Date(0, 0, 1, 0, 0, d3.max(json, (d) => d.Seconds))
     ])
     .range([0, height]) // keeps the plot right-side-up 
   ; 
@@ -105,8 +109,8 @@ function drawSvg() {
     .attr("cx", (d) => d3.format(".2~f")(xScale(new Date(d.Year, 0))))
     .attr("cy", (d) => d3.format(".2~f")(yScale(new Date(0, 0, 1, 0, 0, d.Seconds))))
     .attr("r", 7)
-    .attr("data-xvalue", (d) => d3.format(".2~f")(xScale(new Date(d.Year, 0))))
-    .attr("data-yvalue", (d) => d3.format(".2~f")(yScale(new Date(0, 0, 1, 0, 0, d.Seconds))))
+    .attr("data-xvalue", (d) => new Date(d.Year, 0))
+    .attr("data-yvalue", (d) => new Date(0, 0, 1, 0, 0, d.Seconds))
     .attr("fill", function(d) {
       return d.Doping ? dotColor.dope : dotColor.nodope;
     })
@@ -230,5 +234,12 @@ function drawSvg() {
     let newY = Math.round(margin.top + (bboxHDiff / 2) - (d.xAxisHeight / 2));
     return "translate(" + newX + "," + newY + ")"
   });
+
+
+
+
+ 
+  
+
 
 }
