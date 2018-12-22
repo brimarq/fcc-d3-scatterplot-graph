@@ -59,10 +59,9 @@ svg {
 #tooltip {
   display: flex;
   flex-direction: column;
-  color: #fefefe;
   text-align: left;
   padding: 8px;
-  background: hsla(0, 0%, 0%, 0.8);
+  box-shadow: 3px 3px 10px -5px #000; 
   border-radius: 10px;
   font-size: .8em;
   justify-content: start;

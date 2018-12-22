@@ -244,11 +244,13 @@ function drawSvg() {
     .on("mouseover", function(d) {
       let data = this.dataset, 
           cyclistText = d.Name + " (" + d.Nationality + ")",
-          statsText = "Y: " + d.Year + ", T: " + d.Time
+          statsText = "Y: " + d.Year + ", T: " + d.Time,
+          ttBackground = d.Doping ? "hsla(0, 100%, 85%, 0.9)" : "hsla(120, 100%, 85%, 0.9)"
       ;
       
       tooltip
         .style("visibility", "visible")
+        .style("background", ttBackground)
         .attr("data-year", data.xvalue)
         .each(function() {
           d3.select("#cyclist").text(cyclistText).style("font-weight", "bold");
