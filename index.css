@@ -47,21 +47,8 @@ footer {
 }
 
 div#svg-container {
-  /* position: relative;
-  height: 0;
-  width: 100%;
-  padding: 0;
-  padding-bottom: 100%; */
   user-select: none;
 }
-
-/* #svg-content {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
-} */
 
 svg {
   border-radius: 8px;
@@ -70,16 +57,20 @@ svg {
 }
 
 #tooltip {
+  display: flex;
+  flex-direction: column;
   color: #fefefe;
-  padding: 10px;
+  text-align: left;
+  padding: 8px;
   background: hsla(0, 0%, 0%, 0.8);
   border-radius: 10px;
-  width: 90px;
-  height: 35px;
+  font-size: .8em;
+  justify-content: start;
+  max-width: 101px;
 }
 
 #tooltip span {
-  display: block;
+  padding: 2px;
 }
 
 

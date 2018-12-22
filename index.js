@@ -5,8 +5,6 @@ req.open("GET",'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceD
 req.send();
 req.onload = function() {
   json = JSON.parse(req.responseText);
-  // d3.select("div#svg-container")
-  //   .text(JSON.stringify(json));
   drawSvg();
 };
 
@@ -17,11 +15,13 @@ const tooltip = d3.select("body")
   .style("position", "absolute")
   .style("z-index", "10")
   .style("visibility", "hidden")
-  // .each( function() {
-  //   d3.select(this).append("span").attr("id", "date");
-  //   d3.select(this).append("span").attr("id", "gdp");
-  // })
+  .each(function() {
+    d3.select(this).append("span").attr("id", "cyclist");
+    d3.select(this).append("span").attr("id", "stats");
+    d3.select(this).append("span").attr("id", "thedope");
+  })
 ;
+
 
 function drawSvg() {
 
@@ -42,7 +42,6 @@ function drawSvg() {
     nodope: "hsla(120, 100%, 50%, 0.5)"
   };
 
-
   /** Set the scales for x and y axes */
   const xScale = d3.scaleTime()
     .domain([
@@ -53,6 +52,7 @@ function drawSvg() {
     ])
     .range([0 , width])
   ;
+
   const yScale = d3.scaleTime()
     .domain([
       new Date(0, 0, 1, 0, 0, d3.min(json, (d) => d.Seconds) - 5), 
@@ -96,11 +96,12 @@ function drawSvg() {
     .text("1994 - 2015")
   ;
 
+  /** Create scatterplot group */
   const scatterplot = svg.append("g")
     .attr("id", "scatterplot")
   ;
 
-  /** Create bars from json data */
+  /** Create dots from json data */
   scatterplot.selectAll("circle")
     .data(json)
     .enter()
@@ -116,22 +117,22 @@ function drawSvg() {
     })
   ;
 
-  /** Create barChart axes */
-  // barChart x-axis 
+  /** Create scatterplot axes */
+  // scatterplot x-axis 
   scatterplot.append("g")
     .attr("id", "x-axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis)
   ;
 
-  // barChart y-axis
+  // scatterplot y-axis
   scatterplot.append("g")
     .attr("id", "y-axis")
     .attr("transform", "translate(0, 0)")
     .call(yAxis)
   ;
 
-  // barChart y-axis label
+  // scatterplot y-axis label
   scatterplot.append("text")
     .attr("x", 25)
     .attr("y", height / 2 )
@@ -226,7 +227,7 @@ function drawSvg() {
     d3.select(this).datum(data);
   });
 
-  /** Center the barChart group in the svg */
+  /** Center the scatterplot group in the svg */
   scatterplot.attr("transform", function(d) {
     let bboxWDiff = d.bboxWidth - width;
     let bboxHDiff = d.bboxHeight - height;
@@ -238,8 +239,34 @@ function drawSvg() {
 
 
 
- 
+  /** Hover effects for tooltip */
+  scatterplot.selectAll(".dot")
+    .on("mouseover", function(d) {
+      let data = this.dataset, 
+          cyclistText = d.Name + " (" + d.Nationality + ")",
+          statsText = "Y: " + d.Year + ", T: " + d.Time
+      ;
+      
+      tooltip
+        .style("visibility", "visible")
+        .attr("data-year", data.xvalue)
+        .each(function() {
+          d3.select("#cyclist").text(cyclistText).style("font-weight", "bold");
+          d3.select("#stats").text(statsText);
+          d3.select("#thedope").text(d.Doping);
+        })
+      ;
+    })
+    .on("mousemove", function(d) { 
+      tooltip
+        .style("top", (d3.event.pageY - 50) + "px")
+        .style("left", (d3.event.pageX + 10) + "px");
+    })
+    .on("mouseout", function() {
+      tooltip.style("visibility", "hidden");
+    })
+  ;
   
 
-
+  
 }
