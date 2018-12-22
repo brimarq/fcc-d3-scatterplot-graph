@@ -47,8 +47,6 @@ function drawSvg() {
     .domain([
       new Date(d3.min(json, (d) => d.Year) - 1, 0), 
       new Date(d3.max(json, (d) => d.Year) + 1, 0)
-      // new Date(d3.min(json, (d) => d.Year), 0), 
-      // new Date(d3.max(json, (d) => d.Year), 0)
     ])
     .range([0 , width])
   ;
@@ -57,8 +55,6 @@ function drawSvg() {
     .domain([
       new Date(0, 0, 1, 0, 0, d3.min(json, (d) => d.Seconds) - 5), 
       new Date(0, 0, 1, 0, 0, d3.max(json, (d) => d.Seconds) + 5)
-      // new Date(0, 0, 1, 0, 0, d3.min(json, (d) => d.Seconds)), 
-      // new Date(0, 0, 1, 0, 0, d3.max(json, (d) => d.Seconds))
     ])
     .range([0, height]) // keeps the plot right-side-up 
   ; 
@@ -268,7 +264,4 @@ function drawSvg() {
       tooltip.style("visibility", "hidden");
     })
   ;
-  
-
-  
 }
