@@ -22,7 +22,6 @@ const tooltip = d3.select("body")
   })
 ;
 
-
 function drawSvg() {
 
   /** Set initial svg dimensions to 16:10 ratio */
@@ -38,8 +37,9 @@ function drawSvg() {
 
   /** Set dot colors */
   const dotColor = {
-    dope: "hsla(0, 100%, 50%, 0.5)",
-    nodope: "hsla(120, 100%, 50%, 0.5)"
+    dope: "hsla(0, 100%, 50%, 0.7)",
+    nodope: "hsla(120, 100%, 40%, 0.7)",
+    stroke: "#777"
   };
 
   /** Set the scales for x and y axes */
@@ -115,6 +115,7 @@ function drawSvg() {
     .attr("fill", function(d) {
       return d.Doping ? dotColor.dope : dotColor.nodope;
     })
+    .attr("stroke", dotColor.stroke)
   ;
 
   /** Create scatterplot axes */
@@ -149,13 +150,15 @@ function drawSvg() {
   const legend = scatterplot.append("g")
     .attr("id", "legend")
     .attr("transform", "translate(" + width + ", " + 0 + ")")
-    .style("outline", "1px solid lime")
+    // .style("outline", "1px solid lime")
   ;
 
   // Create a rect for legend box that will center legend contents
   legend.append("rect")
     .attr("id", "legend-box")
-    .attr("fill", "none")
+    .attr("fill", "hsl(0, 0%, 96%)")
+    .attr("rx", 8)
+    .attr("ry", 8)
   ;
     
   // Group for legend text
@@ -163,7 +166,7 @@ function drawSvg() {
     .attr("id", "legend-text")
     .attr("font-size", ".8em")
     .style("text-anchor", "end")
-    .style("outline", "1px solid blue")
+    // .style("outline", "1px solid blue")
     .each(function() {
       d3.select(this).append("text")
         .attr("dy", "1em")
@@ -235,9 +238,6 @@ function drawSvg() {
     let newY = Math.round(margin.top + (bboxHDiff / 2) - (d.xAxisHeight / 2));
     return "translate(" + newX + "," + newY + ")"
   });
-
-
-
 
   /** Hover effects for tooltip */
   scatterplot.selectAll(".dot")
